@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO.Ports;
 
 public class GameController : MonoBehaviour {
   public TextAsset level;
@@ -11,6 +12,7 @@ public class GameController : MonoBehaviour {
   public GameObject blackPlayer;
 
   private Transform prefabParent;
+  private SerialPort serial;
 
   void Start() {
     prefabParent = GameObject.Find("Prefab Parent").transform;
@@ -37,8 +39,14 @@ public class GameController : MonoBehaviour {
         }
       }
     }
+
+    serial = new SerialPort("/dev/ttyACM0", 9600);
+    serial.Open();
   }
 
   void Update() {
+    while (serial.BytesToRead > 0) {
+      Debug.Log(serial.ReadByte());
+    }
   }
 }
