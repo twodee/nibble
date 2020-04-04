@@ -2,17 +2,18 @@
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO.Ports;
+/* using System.IO.Ports; */
 
 public class GameController : MonoBehaviour {
   public TextAsset level;
+  public GameObject doorPrefab;
   public GameObject whiteBlockPrefab;
   public GameObject blackBlockPrefab;
   public GameObject whitePlayer;
   public GameObject blackPlayer;
+  public new Camera camera;
 
   private Transform prefabParent;
-  private SerialPort serial;
 
   void Start() {
     prefabParent = GameObject.Find("Prefab Parent").transform;
@@ -23,8 +24,9 @@ public class GameController : MonoBehaviour {
       for (int c = 0; c < lines[r].Length; ++c) {
         Vector2 position = new Vector2(c, lines.Length - 1 - r);
         char symbol = lines[r][c];
+
         GameObject block;
-        if (symbol == '0' || symbol == 'W') {
+        if (symbol == '0' || symbol == 'w' || symbol == 'W') {
           block = Instantiate(blackBlockPrefab);
         } else {
           block = Instantiate(whiteBlockPrefab);
@@ -32,21 +34,20 @@ public class GameController : MonoBehaviour {
         block.transform.SetParent(prefabParent);
         block.transform.position = position;
 
-        if (symbol == 'W') {
+        if (symbol == 'W' || symbol == 'B') {
+          GameObject door = Instantiate(doorPrefab);
+          door.transform.SetParent(prefabParent);
+          door.transform.position = new Vector3(position.x, position.y, -2);
+        }
+
+        if (symbol == 'w') {
           whitePlayer.transform.position = new Vector3(position.x, position.y, -1);
-        } else if (symbol == 'B') {
+        } else if (symbol == 'b') {
           blackPlayer.transform.position = new Vector3(position.x, position.y, -1);
         }
       }
     }
 
-    serial = new SerialPort("/dev/ttyACM0", 9600);
-    serial.Open();
-  }
-
-  void Update() {
-    while (serial.BytesToRead > 0) {
-      Debug.Log(serial.ReadByte());
-    }
+    camera.transform.position = new Vector3((lines[0].Length - 1) * 0.5f, (lines.Length - 1) * 0.5f, camera.transform.position.z);
   }
 }

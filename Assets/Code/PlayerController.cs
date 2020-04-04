@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 
   void FixedUpdate() {
     if (Input.GetButtonDown($"{color} Vertical")) {
-      rigidbody.AddForce(Vector3.up * 100);
+      rigidbody.AddForce(Vector3.up * 200);
     }
   }
 }
