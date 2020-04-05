@@ -517,6 +517,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: {fileID: 4900000, guid: 5e8f2abefc7188123b59a327fc4400a7, type: 3}
+  doorPrefab: {fileID: 411816922193901774, guid: 2c185f9f85317a9a28d2f393f3dc38e0,
+    type: 3}
   whiteBlockPrefab: {fileID: 1834549458558639791, guid: e85f11a22167ee4128f99edd368b58bf,
     type: 3}
   blackBlockPrefab: {fileID: 5178472375660197035, guid: 0ee0f4c731c45fd57a33722360673daa,
