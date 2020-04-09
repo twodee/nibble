@@ -11,9 +11,12 @@ public class GameController : MonoBehaviour {
   public GameObject blackBlockPrefab;
   public GameObject whitePlayer;
   public GameObject blackPlayer;
+  public GameObject selectionFrame;
   public new Camera camera;
 
   private Transform prefabParent;
+  private int width;
+  private int height;
 
   void Start() {
     prefabParent = GameObject.Find("Prefab Parent").transform;
@@ -48,6 +51,16 @@ public class GameController : MonoBehaviour {
       }
     }
 
-    camera.transform.position = new Vector3((lines[0].Length - 1) * 0.5f, (lines.Length - 1) * 0.5f, camera.transform.position.z);
+    height = lines.Length;
+    width = lines[0].Length;
+    camera.transform.position = new Vector3((width - 1) * 0.5f, (height - 1) * 0.5f, camera.transform.position.z);
+  }
+
+  void Update() {
+    Vector3 mouseScreen = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
+    Vector3 mouseWorld = camera.ScreenToWorldPoint(mouseScreen);
+    int c = Mathf.Clamp(Mathf.RoundToInt(mouseWorld.x) - 2, 0, width - 4);
+    int r = Mathf.Clamp(Mathf.RoundToInt(mouseWorld.y), 0, height - 1);
+    selectionFrame.transform.position = new Vector3(c, r, selectionFrame.transform.position.z);
   }
 }
